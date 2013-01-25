@@ -15,7 +15,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our $DEFAULT_FILE = '/etc/hosts';
 
@@ -253,13 +253,11 @@ sub insert_host ($%) {
 	push(@{$self->{_contents}}, "$ip\t$hosts_line$comment");
 	if ($self->{_hosts}{$ip}) {
 		print STDERR "INSERT: Warning:duplicate IP $ip, the last one will be used\n";
-		use Data::Dumper;
-		print Dumper $self->{_hosts}{$ip};
 		for my $h_host (@{$self->{_hosts}{$ip}{hosts}}) {
 			delete $self->{_hosts}{$h_host}
 		}
 		my $index = $self->{_hosts}{$ip}{line};
-		splice(@{$self->{_contents}}, $index-1, 1);
+		splice(@{$self->{_contents}}, $index, 1);
 	}
 	$self->{_hosts}{$ip} = {
 		hosts => $hosts,
@@ -301,7 +299,7 @@ sub delete_host ($$) {
 		return 0;
 	}
 	my $index = $self->{_hosts}{$host}{line};
-	splice(@{$self->{_contents}}, $index-1, 1);
+	splice(@{$self->{_contents}}, $index, 1);
 	if ($type == $TYPE_IP) {
 		for my $h_host (@{$self->{_hosts}{$host}{hosts}}) {
 			delete $self->{_hosts}{$h_host}
@@ -412,7 +410,8 @@ sub update_host ($$%) {
 	}
 	my $hosts_line = join(" ", @{$self->{_hosts}{$new_ip}{hosts}});
 	my $new_line = "$new_ip\t$hosts_line$comment";
-	splice(@{$self->{_contents}}, $index-1, 1, $new_line);
+	splice(@{$self->{_contents}}, $index, 1, $new_line);
+
 	return 1;
 }
 
@@ -482,6 +481,8 @@ L<http://search.cpan.org/dist/Config-Hosts/>
 
 =head1 ACKNOWLEDGEMENTS
 
+Thanks to Vicente Gavara C<< <vicente.gavara at tcomm.es> >> for
+providing a fix for editing/deleting routines.
 
 =head1 LICENSE AND COPYRIGHT
 

@@ -18,12 +18,12 @@ for my $host (keys %{$hosts->{_hosts}}) {
 	my $type = $hosts->determine_ip_or_host($host);
 	if ($type == $Config::Hosts::TYPE_IP) {
 		is($type, $Config::Hosts::TYPE_IP, "$host is a valid ip");
-		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/i);
+		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/i, "ip preserved");
 		isa_ok($hosts->{_hosts}{$host}{hosts}, 'ARRAY');
 	}
 	elsif ($type == $Config::Hosts::TYPE_HOST) {
 		is($type, $Config::Hosts::TYPE_HOST, "$host is a valid hostname");
-		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/i);
+		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/i, "hostname preserved");
 		ok(Config::Hosts::is_valid_ip($hosts->{_hosts}{$host}{ip}), "ip specified ok");
 	}
 	else {
@@ -37,12 +37,12 @@ for my $host (keys %{$hosts->{_hosts}}) {
 	my $type = $hosts->determine_ip_or_host($host);
 	if ($type == $Config::Hosts::TYPE_IP) {
 		is($type, $Config::Hosts::TYPE_IP, "$host is a valid ip");
-		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/);
+		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/, "ip preserved");
 		isa_ok($hosts->{_hosts}{$host}{hosts}, 'ARRAY');
 	}
 	elsif ($type == $Config::Hosts::TYPE_HOST) {
 		is($type, $Config::Hosts::TYPE_HOST, "$host is a valid hostname");
-		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/);
+		like($hosts->{_contents}[$hosts->{_hosts}{$host}{line}], qr/$host/, "hostname preserved");
 		ok(Config::Hosts::is_valid_ip($hosts->{_hosts}{$host}{ip}), "ip specified ok");
 	}
 	else {
