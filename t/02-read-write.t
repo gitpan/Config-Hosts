@@ -10,7 +10,7 @@ my $hosts = Config::Hosts->new();
 
 use Data::Dumper;
 
-my $tmp_hosts = "/tmp/hosts";
+my $tmp_hosts = $^O eq 'MSWin32' ? "c:/temp/hosts" : "/tmp/hosts";
 
 $hosts->read_hosts('t/hosts');
 plan(tests => (scalar keys %{$hosts->{_hosts}} ) * 6);
